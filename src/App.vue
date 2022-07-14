@@ -1,27 +1,44 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div class="app">
+    <input type="text" v-model="search" />
+    <div v-for="movie in filteredMovies" :key="movie.id">
+      <PostComponent :movie="movie"></PostComponent>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+import { defineComponent } from "vue";
+import PostComponent from "./components/PostComponent.vue";
 
 export default defineComponent({
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+  name: "App",
+  components: { PostComponent },
+  data() {
+    return {
+      search: "",
+      movies: [
+        {
+          id: 1,
+          title: "Batman",
+          body: "Amazing Movie",
+        },
+        {
+          id: 2,
+          title: "Green Lantern",
+          body: "Horrible Movie",
+        },
+      ],
+    };
+  },
+  computed: {
+    filteredMovies(): any {
+      return this.movies.filter((movie) =>
+        movie.title.toLowerCase().includes(this.search.toLowerCase())
+      );
+    },
+  },
 });
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style></style>
