@@ -1,42 +1,73 @@
 <template>
   <div class="app">
-    <input type="text" v-model="search" />
-    <div v-for="movie in filteredMovies" :key="movie.id">
-      <PostComponent :movie="movie"></PostComponent>
-    </div>
+    <div v-if="loading">Loading...</div>
+
+    <div v-else-if="error">Error: {{ error.message }}</div>
+
+    <ul v-else-if="result && result.popularTitles">
+      <li v-for="dog of result.popularTitles" :key="dog.id">
+        {{ dog }}
+      </li>
+    </ul>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import PostComponent from "./components/PostComponent.vue";
+import gql from "graphql-tag";
+import { useQuery } from "@vue/apollo-composable";
 
 export default defineComponent({
   name: "App",
-  components: { PostComponent },
-  data() {
+  setup() {
+    const { result, loading, error } = useQuery(
+      gql`
+        query GetSuggestedTitles(
+          $country: Country!
+          $language: Language!
+          $first: Int!
+          $filter: TitleFilter
+        ) {
+          popularTitles(country: $country, first: $first, filter: $filter) {
+            edges {
+              node {
+                ...SuggestedTitle
+                __typename
+              }
+              __typename
+            }
+            __typename
+          }
+        }
+
+        fragment SuggestedTitle on MovieOrShow {
+          id
+          objectType
+          objectId
+          content(country: $country, language: $language) {
+            fullPath
+            title
+            originalReleaseYear
+            posterUrl
+            fullPath
+            __typename
+          }
+          __typename
+        }
+      `,
+      {
+        country: "US",
+        language: "en",
+        first: 7,
+        filter: { searchQuery: "p" },
+      }
+    );
+    console.log(result);
     return {
-      search: "",
-      movies: [
-        {
-          id: 1,
-          title: "Batman",
-          body: "Amazing Movie",
-        },
-        {
-          id: 2,
-          title: "Green Lantern",
-          body: "Horrible Movie",
-        },
-      ],
+      result,
+      loading,
+      error,
     };
-  },
-  computed: {
-    filteredMovies(): any {
-      return this.movies.filter((movie) =>
-        movie.title.toLowerCase().includes(this.search.toLowerCase())
-      );
-    },
   },
 });
 </script>
