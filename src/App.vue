@@ -1,12 +1,14 @@
 <template>
   <div class="app">
+    <input type="search" v-model="theSearchKeyword" />
+    <button @click="refetch()">Search Movie</button>
     <div v-if="loading">Loading...</div>
 
     <div v-else-if="error">Error: {{ error.message }}</div>
 
-    <ul v-else-if="result && result.popularTitles">
-      <li v-for="dog of result.popularTitles" :key="dog.id">
-        {{ dog }}
+    <ul v-else-if="result">
+      <li v-for="item of result.popularTitles" :key="item">
+        <h3>{{ item }}</h3>
       </li>
     </ul>
   </div>
@@ -19,8 +21,11 @@ import { useQuery } from "@vue/apollo-composable";
 
 export default defineComponent({
   name: "App",
-  setup() {
-    const { result, loading, error } = useQuery(
+  props: ["id"],
+
+  setup(props) {
+    const theSearchKeyword = "Stranger Things";
+    const { result, loading, error, refetch } = useQuery(
       gql`
         query GetSuggestedTitles(
           $country: Country!
@@ -39,7 +44,6 @@ export default defineComponent({
             __typename
           }
         }
-
         fragment SuggestedTitle on MovieOrShow {
           id
           objectType
@@ -55,20 +59,29 @@ export default defineComponent({
           __typename
         }
       `,
-      {
-        country: "US",
-        language: "en",
-        first: 7,
-        filter: { searchQuery: "p" },
-      }
+      () => ({
+        country: "US" as string,
+        language: "en" as string,
+        first: 10 as number,
+        filter: { searchQuery: theSearchKeyword },
+      })
     );
+
     console.log(result);
+
     return {
       result,
       loading,
       error,
+      refetch,
+      theSearchKeyword,
     };
   },
+  // methods: {
+  //   changeMessage(event: any) {
+  //     this.theSearchKeyword = event.target.value;
+  //   },
+  // },
 });
 </script>
 
