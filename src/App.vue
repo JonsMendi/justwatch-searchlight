@@ -1,18 +1,18 @@
 <template>
   <div class="app">
     <MovieComponent />
-    <TestComponent />
+    <!-- <TestComponent /> -->
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import MovieComponent from "./components/MovieComponent.vue";
-import TestComponent from "./components/TestComponent.vue";
+// import TestComponent from "./components/TestComponent.vue";
 
 export default defineComponent({
   name: "JustWatch-SearchLight",
-  components: { MovieComponent, TestComponent },
+  components: { MovieComponent },
 });
 </script>
 
