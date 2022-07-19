@@ -223,4 +223,29 @@ h2 {
   color: #242424;
   transition: 300ms;
 }
+
+/* Under the responsiveness is defined in a very simple way */
+
+@media all and (max-width: 1124px) {
+  .logo {
+    margin-left: 20px;
+  }
+  .input-wrapper {
+    flex-direction: column;
+    margin-left: 70px;
+  }
+  .movies-input {
+    margin-top: 30px;
+  }
+  .movies-wrapper {
+    grid-template-columns: 1fr 1fr;
+    margin-right: 20px;
+  }
+}
+
+@media all and (max-width: 768px) {
+  .movies-wrapper {
+    grid-template-columns: 1fr;
+  }
+}
 </style>
