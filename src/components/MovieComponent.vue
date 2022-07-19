@@ -12,14 +12,14 @@
     <div class="movies-wrapper">
       <ul v-for="movie in movies" :key="movie">
         <li class="movies-item">
-          <div class="movies-inside">
-            <h2>{{ movie.title }}</h2>
-            <p>Released Year: {{ movie.originalReleaseYear }}</p>
-            <p>Type: {{ movie.objectType }}</p>
-            <button class="movie-button">
-              <a @click="openNewPath(movie.fullPath)">Check in JustWatch!</a>
-            </button>
-          </div>
+          <a @click="openNewPath(movie.fullPath)" class="movie-button">
+            <div class="movies-inside">
+              <h2>{{ movie.title }}</h2>
+              <p>Released Year: {{ movie.originalReleaseYear }}</p>
+              <p>Type: {{ movie.objectType }}</p>
+              <p class="movie-click">Click to check in JustWatch!</p>
+            </div>
+          </a>
         </li>
       </ul>
     </div>
@@ -208,20 +208,16 @@ h2 {
   left: 40px;
 }
 
-.movie-button {
-  padding: 8px 20px;
-  border-radius: 2px;
-  outline: none;
-  border: none;
+.movie-button:hover {
+  transition: all 0.5s ease-out;
+  transition: 300ms;
   cursor: pointer;
 }
 
-.movie-button:hover {
-  transition: all 0.5s ease-out;
-  background: #fff;
-  opacity: 0.8;
-  color: #242424;
-  transition: 300ms;
+.movie-click {
+  font-size: 12px;
+  padding-top: 30px;
+  color: grey;
 }
 
 /* Under the responsiveness is defined in a very simple way */
