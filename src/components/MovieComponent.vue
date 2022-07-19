@@ -13,9 +13,12 @@
       <ul v-for="movie in movies" :key="movie">
         <li class="movies-item">
           <div class="movies-inside">
-            <h3>{{ movie.title }}</h3>
+            <h2>{{ movie.title }}</h2>
             <p>Released Year: {{ movie.originalReleaseYear }}</p>
             <p>Type: {{ movie.objectType }}</p>
+            <button class="movie-button">
+              <a @click="openNewPath(movie.fullPath)">Check in JustWatch!</a>
+            </button>
           </div>
         </li>
       </ul>
@@ -121,6 +124,10 @@ export default defineComponent({
         console.log(error);
       }
     },
+    // Under function to allow access the justwatch website for the specific movie.
+    openNewPath: function (access: any) {
+      window.open("https://www.justwatch.com" + access, "_blank");
+    },
   },
 });
 </script>
@@ -155,10 +162,11 @@ export default defineComponent({
 }
 
 .movies-wrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 15px;
+  padding: 2px;
 }
 
 .movies-item {
@@ -166,14 +174,29 @@ export default defineComponent({
   border: 2px solid #ebc324;
   border-radius: 5px;
   background-color: #10161d;
+  transform: scale(1);
+  transition: transform 0.2s ease;
+}
+
+.movies-item:hover {
+  transform: scale(1.01);
 }
 
 .movies-inside {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   margin: 10px;
+  padding: 50px;
 }
 
 li {
   list-style: none;
+}
+
+h2 {
+  text-align: center;
 }
 
 .signature {
@@ -183,5 +206,21 @@ li {
   font-size: 11px;
   top: 50px;
   left: 40px;
+}
+
+.movie-button {
+  padding: 8px 20px;
+  border-radius: 2px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.movie-button:hover {
+  transition: all 0.5s ease-out;
+  background: #fff;
+  opacity: 0.8;
+  color: #242424;
+  transition: 300ms;
 }
 </style>
