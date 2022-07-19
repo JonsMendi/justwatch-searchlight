@@ -151,7 +151,7 @@ export default defineComponent({
   align-items: center;
   margin-top: 80px;
   margin-bottom: 60px;
-  margin-right: 80px;
+  margin-right: 40px;
 }
 
 .movies-input {
@@ -232,7 +232,7 @@ h2 {
   }
   .input-wrapper {
     flex-direction: column;
-    margin-left: 70px;
+    margin-left: 20px;
   }
   .movies-input {
     margin-top: 30px;
